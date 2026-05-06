@@ -16,7 +16,6 @@ export default function Navbar() {
           <NavLink to="/appointments"className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>Appointments</NavLink>
         </div>
         <div className="navbar-user">
-          <span>Hi, {user?.name || user?.username}</span>
           <button className="btn btn-secondary btn-sm" onClick={logout}>Log out</button>
         </div>
       </div>
