@@ -74,24 +74,20 @@ export default function Clients() {
           <p>Add your first client to get started.</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div className="client-grid">
           {filtered.map(c => (
-            <Link key={c.id} to={`/clients/${c.id}`} className="client-row">
+            <Link key={c.id} to={`/clients/${c.id}`} className="client-card">
               <div className="client-avatar">{c.name[0].toUpperCase()}</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600 }}>{c.name}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  {[c.phone, c.email].filter(Boolean).join(' · ')}
-                </div>
+              <div className="client-name">{c.name}</div>
+              <div className="client-meta">{c.phone || c.email || 'No contact info'}</div>
+              <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                {c.upcoming_count > 0 && <span className="badge">{c.upcoming_count} upcoming</span>}
+                {c.last_visit && (
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                    Last visit {new Date(c.last_visit).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </span>
+                )}
               </div>
-              {c.upcoming_count > 0 && (
-                <span className="badge badge-upcoming">{c.upcoming_count} upcoming</span>
-              )}
-              {c.last_visit && (
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  Last: {new Date(c.last_visit).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                </span>
-              )}
             </Link>
           ))}
         </div>

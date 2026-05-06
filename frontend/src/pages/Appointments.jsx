@@ -47,7 +47,7 @@ export default function Appointments() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {filtered.map(a => (
-            <div key={a.id} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <div key={a.id} className={`appt-item ${a.status}`}>
               <div>
                 <Link to={`/clients/${a.client_id}`} style={{ fontWeight: 600, color: 'var(--text)', textDecoration: 'none' }}>
                   {a.client_name}

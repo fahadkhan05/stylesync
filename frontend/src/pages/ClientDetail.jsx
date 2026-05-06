@@ -204,7 +204,7 @@ export default function ClientDetail() {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {client.appointments.map(a => (
-                <div key={a.id} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div key={a.id} className={`appt-item ${a.status}`}>
                   <div>
                     <div style={{ fontWeight: 600 }}>{a.service || 'Appointment'}</div>
                     <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
