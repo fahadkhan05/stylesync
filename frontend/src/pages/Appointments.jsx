@@ -53,7 +53,7 @@ export default function Appointments() {
                   {a.client_name}
                 </Link>
                 <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                  {a.service || 'Service TBD'} · {new Date(`${a.date}T00:00`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} · {new Date(`2000-01-01T${a.time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                  {a.service || 'Service TBD'} · {new Date(`${String(a.date).slice(0, 10)}T00:00`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} · {new Date(`2000-01-01T${a.time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
                 </div>
                 {a.notes && <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>{a.notes}</div>}
               </div>

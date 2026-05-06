@@ -208,7 +208,7 @@ export default function ClientDetail() {
                   <div>
                     <div style={{ fontWeight: 600 }}>{a.service || 'Appointment'}</div>
                     <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                      {new Date(`${a.date}T00:00`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                      {new Date(`${String(a.date).slice(0, 10)}T00:00`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                       {' · '}
                       {new Date(`2000-01-01T${a.time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
                     </div>
@@ -259,7 +259,7 @@ export default function ClientDetail() {
                 <div key={f.id} className="card">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      {new Date(`${f.date}T00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      {new Date(`${String(f.date).slice(0, 10)}T00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                     </div>
                     <button className="btn btn-secondary btn-sm" style={{ color: 'var(--danger)' }} onClick={() => deleteFormula(f.id)}>✕</button>
                   </div>

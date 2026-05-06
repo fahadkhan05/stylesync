@@ -4,7 +4,7 @@ import api from '../api/axios'
 
 const fmt = (dt, t) => {
   if (!dt) return ''
-  const d = new Date(`${dt}T${t || '00:00'}`)
+  const d = new Date(`${String(dt).slice(0, 10)}T${t || '00:00'}`)
   return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) +
     (t ? ' · ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '')
 }
