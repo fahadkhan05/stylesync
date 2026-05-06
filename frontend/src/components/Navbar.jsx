@@ -8,7 +8,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-inner">
         <NavLink to="/" className="navbar-brand">
-          Style<span style={{ color: '#c084fc' }}>Sync</span>
+          StyleSync
         </NavLink>
         <div className="navbar-links">
           <NavLink to="/"            className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>Dashboard</NavLink>

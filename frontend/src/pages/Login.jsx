@@ -28,10 +28,10 @@ export default function Login() {
     <div className="auth-container">
       <div className="auth-card">
         <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <div style={{ fontFamily: "'Raleway', sans-serif", fontSize: '2.5rem', fontWeight: 700, letterSpacing: '0.01em', lineHeight: 1 }}>
-            <span style={{ color: '#a855f7' }}>Style</span><span style={{ color: '#c084fc' }}>Sync</span>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '2.6rem', fontWeight: 600, letterSpacing: '0.01em', lineHeight: 1, color: 'var(--primary)' }}>
+            StyleSync
           </div>
-          <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>Client management for stylists</p>
+          <p style={{ marginTop: '0.6rem', color: 'var(--text-muted)', fontSize: '0.875rem', letterSpacing: '0.04em', textTransform: 'uppercase' }}>Client Management</p>
         </div>
 
         {error && <div className="alert alert-error">{error}</div>}
