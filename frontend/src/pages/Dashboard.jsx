@@ -15,7 +15,8 @@ export default function Dashboard() {
 
   if (loading) return <div className="loading">Loading...</div>
 
-  const today      = new Date().toISOString().slice(0, 10)
+  const _now       = new Date()
+  const today      = `${_now.getFullYear()}-${String(_now.getMonth() + 1).padStart(2, '0')}-${String(_now.getDate()).padStart(2, '0')}`
   const todayAppts = appointments
     .filter(a => String(a.date).slice(0, 10) === today)
     .sort((a, b) => a.time > b.time ? 1 : -1)
