@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useState } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Sidebar      from './components/Sidebar'
 import Login        from './pages/Login'
@@ -14,10 +15,17 @@ function Protected({ children }) {
 }
 
 function Layout({ children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
     <div className="app-layout">
-      <Sidebar />
-      <main className="main-content">{children}</main>
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+      <main className="main-content">
+        <button className="mobile-menu-btn" onClick={() => setSidebarOpen(true)} aria-label="Open menu">
+          <span /><span /><span />
+        </button>
+        {children}
+      </main>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 
+
 const DashboardIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
@@ -23,20 +24,20 @@ const CalendarIcon = () => (
   </svg>
 )
 
-export default function Sidebar() {
+export default function Sidebar({ open, onClose }) {
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${open ? 'sidebar--open' : ''}`}>
       <div className="sidebar-logo">StyleSync</div>
 
       <div className="sidebar-section-label">Menu</div>
       <nav className="sidebar-nav">
-        <NavLink to="/" end className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/" end onClick={onClose} className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
           <DashboardIcon /> Dashboard
         </NavLink>
-        <NavLink to="/clients" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/clients" onClick={onClose} className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
           <ClientsIcon /> Clients
         </NavLink>
-        <NavLink to="/appointments" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/appointments" onClick={onClose} className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
           <CalendarIcon /> Appointments
         </NavLink>
       </nav>
