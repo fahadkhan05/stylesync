@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
-import Navbar       from './components/Navbar'
+import Sidebar      from './components/Sidebar'
 import Login        from './pages/Login'
 import Dashboard    from './pages/Dashboard'
 import Clients      from './pages/Clients'
@@ -15,10 +15,10 @@ function Protected({ children }) {
 
 function Layout({ children }) {
   return (
-    <>
-      <Navbar />
+    <div className="app-layout">
+      <Sidebar />
       <main className="main-content">{children}</main>
-    </>
+    </div>
   )
 }
 

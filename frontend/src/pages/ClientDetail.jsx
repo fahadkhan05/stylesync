@@ -112,7 +112,7 @@ export default function ClientDetail() {
   if (loading) return <div className="loading">Loading client...</div>
   if (!client) return null
 
-  const statusColor = { upcoming: '#a855f7', completed: 'var(--success)', cancelled: 'var(--text-muted)' }
+  const statusColor = { upcoming: 'var(--primary)', completed: 'var(--success)', cancelled: 'var(--text-muted)' }
 
   return (
     <div className="page">
@@ -150,8 +150,8 @@ export default function ClientDetail() {
 
       {/* Notes banner */}
       {client.notes && !editing && (
-        <div className="card" style={{ marginBottom: '1.5rem', background: 'var(--primary-light)', borderLeft: '3px solid #a855f7' }}>
-          <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#a855f7', marginBottom: '0.25rem' }}>NOTES</div>
+        <div className="card" style={{ marginBottom: '1.5rem', background: 'var(--primary-light)', borderLeft: '3px solid var(--primary)' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '0.25rem' }}>NOTES</div>
           <div style={{ fontSize: '0.9rem' }}>{client.notes}</div>
         </div>
       )}

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api/axios'
 
-const STATUS_COLORS = { upcoming: '#a855f7', completed: 'var(--success)', cancelled: 'var(--text-muted)' }
+const STATUS_COLORS = { upcoming: 'var(--primary)', completed: 'var(--success)', cancelled: 'var(--text-muted)' }
 
 export default function Appointments() {
   const [appointments, setAppointments] = useState([])
@@ -33,11 +33,12 @@ export default function Appointments() {
     <div className="page">
       <h1 className="page-title">Appointments</h1>
 
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
+      <div className="tabs">
         {['upcoming', 'completed', 'cancelled', 'all'].map(f => (
-          <button key={f} className={`btn ${filter === f ? 'btn-primary' : 'btn-secondary'} btn-sm`}
+          <button key={f} className={`tab-btn ${filter === f ? 'active' : ''}`}
             onClick={() => setFilter(f)} style={{ textTransform: 'capitalize' }}>
             {f}
+            <span className="tab-count">{appointments.filter(a => f === 'all' ? true : a.status === f).length}</span>
           </button>
         ))}
       </div>

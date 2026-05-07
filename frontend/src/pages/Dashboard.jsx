@@ -2,13 +2,6 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api/axios'
 
-const fmt = (dt, t) => {
-  if (!dt) return ''
-  const d = new Date(`${String(dt).slice(0, 10)}T${t || '00:00'}`)
-  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) +
-    (t ? ' · ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '')
-}
-
 export default function Dashboard() {
   const [appointments, setAppointments] = useState([])
   const [clients, setClients]           = useState([])
@@ -22,71 +15,97 @@ export default function Dashboard() {
 
   if (loading) return <div className="loading">Loading...</div>
 
-  const today     = new Date().toISOString().slice(0, 10)
-  const todayAppts = appointments.filter(a => a.date?.slice(0, 10) === today).sort((a, b) => a.time > b.time ? 1 : -1)
-  const upcoming   = appointments.filter(a => a.status === 'upcoming' && a.date?.slice(0, 10) >= today).slice(0, 5)
+  const today      = new Date().toISOString().slice(0, 10)
+  const todayAppts = appointments
+    .filter(a => String(a.date).slice(0, 10) === today)
+    .sort((a, b) => a.time > b.time ? 1 : -1)
+  const upcoming   = appointments
+    .filter(a => a.status === 'upcoming' && String(a.date).slice(0, 10) > today)
+    .sort((a, b) => a.date > b.date ? 1 : -1)
+    .slice(0, 6)
+
+  const fmtTime = t => new Date(`2000-01-01T${t}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  const fmtDate = d => new Date(`${String(d).slice(0, 10)}T00:00`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+
+  const dayName  = new Date().toLocaleDateString('en-US', { weekday: 'long' })
+  const dateStr  = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
   return (
     <div className="page">
-      <h1 className="page-title">Dashboard</h1>
 
-      {/* Stat cards */}
-      <div className="grid-3" style={{ marginBottom: '1.5rem' }}>
-        <div className="card">
-          <div className="card-title">Total Clients</div>
-          <div className="stat-number" style={{ color: '#a855f7' }}>{clients.length}</div>
+      {/* Editorial date header */}
+      <div className="dash-header">
+        <div className="dash-dayname">{dayName}</div>
+        <div className="dash-date">{dateStr}</div>
+      </div>
+
+      {/* Stat pills */}
+      <div className="stat-pills">
+        <div className="stat-pill">
+          <span className="stat-pill-num">{clients.length}</span>
+          <span className="stat-pill-label">Clients</span>
         </div>
-        <div className="card">
-          <div className="card-title">Today's Appointments</div>
-          <div className="stat-number" style={{ color: '#a855f7' }}>{todayAppts.length}</div>
+        <div className="stat-pill-divider" />
+        <div className="stat-pill">
+          <span className="stat-pill-num">{todayAppts.length}</span>
+          <span className="stat-pill-label">Today</span>
         </div>
-        <div className="card">
-          <div className="card-title">Upcoming</div>
-          <div className="stat-number" style={{ color: '#a855f7' }}>{appointments.filter(a => a.status === 'upcoming').length}</div>
+        <div className="stat-pill-divider" />
+        <div className="stat-pill">
+          <span className="stat-pill-num">{appointments.filter(a => a.status === 'upcoming').length}</span>
+          <span className="stat-pill-label">Upcoming</span>
         </div>
       </div>
 
-      <div className="dashboard-main">
-        {/* Today */}
-        <div className="card" style={{ flex: 1 }}>
-          <div className="card-title" style={{ marginBottom: '1rem' }}>Today — {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
+      <div className="dash-columns">
+
+        {/* Today's schedule */}
+        <div className="dash-col">
+          <div className="dash-col-heading">Today's Schedule</div>
           {todayAppts.length === 0 ? (
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>No appointments today.</p>
+            <div className="dash-empty">No appointments today</div>
           ) : (
-            todayAppts.map(a => (
-              <Link key={a.id} to={`/clients/${a.client_id}`} className="appt-row">
-                <div>
-                  <div style={{ fontWeight: 600 }}>{a.client_name}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{a.service || 'Service TBD'}</div>
-                </div>
-                <div style={{ fontSize: '0.85rem', color: '#a855f7', fontWeight: 500 }}>
-                  {new Date(`2000-01-01T${a.time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                </div>
-              </Link>
-            ))
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {todayAppts.map(a => (
+                <Link key={a.id} to={`/clients/${a.client_id}`} className="schedule-item">
+                  <div className="schedule-time">{fmtTime(a.time)}</div>
+                  <div className="schedule-line" />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: '0.925rem' }}>{a.client_name}</div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>{a.service || 'Service TBD'}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           )}
         </div>
 
         {/* Upcoming */}
-        <div className="card" style={{ flex: 1 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <div className="card-title" style={{ margin: 0 }}>Upcoming</div>
-            <Link to="/appointments" style={{ fontSize: '0.8rem', color: '#a855f7', textDecoration: 'none' }}>View all →</Link>
+        <div className="dash-col">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+            <div className="dash-col-heading">Coming Up</div>
+            <Link to="/appointments" style={{ fontSize: '0.75rem', color: 'var(--primary)', textDecoration: 'none' }}>View all</Link>
           </div>
           {upcoming.length === 0 ? (
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>No upcoming appointments.</p>
+            <div className="dash-empty">No upcoming appointments</div>
           ) : (
-            upcoming.map(a => (
-              <Link key={a.id} to={`/clients/${a.client_id}`} className="appt-row">
-                <div>
-                  <div style={{ fontWeight: 600 }}>{a.client_name}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{a.service || 'Service TBD'}</div>
-                </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{fmt(a.date, a.time)}</div>
-              </Link>
-            ))
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {upcoming.map(a => (
+                <Link key={a.id} to={`/clients/${a.client_id}`} className="upcoming-item">
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{a.client_name}</div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{a.service || 'Service TBD'}</div>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textAlign: 'right' }}>
+                    <div>{fmtDate(a.date)}</div>
+                    <div style={{ color: 'var(--primary)', marginTop: '0.1rem' }}>{fmtTime(a.time)}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           )}
         </div>
+
       </div>
     </div>
   )
